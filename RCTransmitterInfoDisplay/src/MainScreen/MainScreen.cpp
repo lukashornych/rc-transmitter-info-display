@@ -1,38 +1,39 @@
 #include "MainScreen.h"
 
-// MainScreen::MainScreen(SSD1306Device &display) : display(display)
-// {}
+MainScreen::MainScreen(U8G2_SSD1306_128X64_NONAME_1_HW_I2C &display) : display(display)
+{}
 
-void MainScreen::init()
+void MainScreen::draw(const char * t, float lipoVoltage, const char * fullLIPOVoltageText, const char * cellVoltageText)
 {
-    ssd1306_128x64_i2c_init();
-    ssd1306_fillScreen(0);
-    ssd1306_setFixedFont(ssd1306xled_font5x7);
-}
-
-void MainScreen::draw(const char * t, const char * fullLIPOVoltage, const char * cellVoltage)
-{
-    drawTime(t);
-    drawLIPO(fullLIPOVoltage, cellVoltage);
+    display.firstPage();
+    do {
+        drawTime(t);
+        drawLIPO(lipoVoltage, fullLIPOVoltageText, cellVoltageText);
+    } while (display.nextPage());
 }
 
 void MainScreen::drawTime(const char * t)
 {
-    // ssd1306_drawBitmap(leftOffset, 1, iconsWidth, iconsHeight, stopwatchIcon);
-    // ssd1306_printFixed(leftOffset + iconsWidth + textOffset, 8, t, STYLE_NORMAL);
-    
-    ssd1306_printFixedN(0, 0, t, STYLE_NORMAL, 1);
+    display.drawXBM(0, 0, iconsWidth, iconsHeight, stopwatchIcon);
 
+    display.setFont(u8g2_font_7x14_mr);
+    display.drawStr(iconsWidth + textOffsetX, 13, t);
 }
 
-void MainScreen::drawLIPO(const char * fullLIPOVoltage, const char * cellVoltage)
+void MainScreen::drawLIPO(float lipoVoltage, const char * fullLIPOVoltageText, const char * cellVoltageText)
 {
-    // ssd1306_drawBitmap(leftOffset, 3, iconsWidth, iconsHeight, lipoIcon);
-    // ssd1306_printFixed(leftOffset + iconsWidth + textOffset, 24, fullLIPOVoltage, STYLE_NORMAL);
+    const byte width = 8;
+    const byte maxHeight = 21;
 
-    ssd1306_printFixedN(0, 16, fullLIPOVoltage, STYLE_NORMAL, 2);
+    // calculate height of box in battery icon from percentage of battery
+    byte lipoCapacityRectHeight = constrain(lipoVoltage - 10.8f, 0, 12.6f) / 1.8f * maxHeight;
+    
+    display.drawXBM(0, 16, lipoIconWidth, lipoIconHeight, lipoIcon);
+    display.drawBox(4, 23 + (maxHeight - lipoCapacityRectHeight), width, lipoCapacityRectHeight);
 
-    ssd1306_printFixed(0, 48, cellVoltage, STYLE_NORMAL);
-    // ssd1306_printFixed(42, 24, cellVoltage, STYLE_NORMAL);
-    // ssd1306_printFixed(84, 24, cellVoltage, STYLE_NORMAL);
+    display.setFont(u8g2_font_fur25_tf);
+    display.drawStr(iconsWidth + textOffsetX, 45, fullLIPOVoltageText);
+
+    display.setFont(u8g2_font_7x14_mr);
+    display.drawStr(1, 61, cellVoltageText);
 }
