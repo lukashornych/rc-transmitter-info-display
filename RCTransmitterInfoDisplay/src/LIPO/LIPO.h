@@ -3,7 +3,17 @@
 
 #include <Arduino.h>
 
-float getLIPOVoltage(byte lipo);
-float getAproximateCellVoltage(float lipoVoltage);
+
+
+class LIPO
+{
+    public:
+        LIPO(byte lipoPin);
+        float getLIPOVoltage();
+        float getAproximateCellVoltage(float lipoVoltage);
+
+    private:
+        byte lipoPin;
+};
 
 #endif // __LIPO_H_
