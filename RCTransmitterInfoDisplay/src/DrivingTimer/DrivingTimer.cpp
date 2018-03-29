@@ -7,11 +7,6 @@ DrivingTimer::DrivingTimer(byte leverPin, word timeToWaitBeforePauseMeasuring, w
     leverLowerDeadzone = leverNeutralValue - leverNeutralPositionDeadzone;
 }
 
-int DrivingTimer::getLeverValue()
-{
-    return analogRead(leverPin);
-}
-
 void DrivingTimer::measureDrivingTime()
 {
     if (carIsMoving) {
@@ -29,21 +24,22 @@ void DrivingTimer::measureDrivingTime()
 
 void DrivingTimer::controlCarMovement()
 {
-    word leverValue = getLeverValue();
+    word leverValue = analogRead(leverPin);
 
-    // lever was pressed
-    if (!carIsMoving && ((leverUpperDeadzone < leverValue) || (leverLowerDeadzone > leverValue))) {
+    // lever is pressed
+    if ((leverUpperDeadzone < leverValue) || (leverLowerDeadzone > leverValue)) {
         carIsMoving = true;
-    
-    // car is moving but lever is in neutral
-    } else if (carIsMoving && ((leverUpperDeadzone > leverValue) || (leverLowerDeadzone < leverValue))) {
-        pauseTimer = millis();
-    
-    // car is not moving anymore
-    } else if (carIsMoving && (pauseTimer != 0)) {
-        if ((pauseTimer + timeToWaitBeforePauseMeasuring) < millis()) {
-            carIsMoving = false;
-            pauseTimer = 0;
+        pauseTimer = 0;
+
+    // lever is in neutral
+    } else if ((leverUpperDeadzone > leverValue) || (leverLowerDeadzone < leverValue)) {
+        if (pauseTimer == 0) {
+            pauseTimer = millis();
+        } else {
+            if ((pauseTimer + timeToWaitBeforePauseMeasuring) < millis()) {
+                pauseTimer = 0;
+                carIsMoving = false;
+            }
         }
     }
 }

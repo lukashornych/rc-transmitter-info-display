@@ -20,6 +20,7 @@ class DrivingTimer
         unsigned long getRawTime();
         byte getMinutes();
         byte getSeconds();
+        bool carIsMoving = false;
 
     private:
         byte leverPin;
@@ -36,9 +37,8 @@ class DrivingTimer
         unsigned long pauseTimer = 0;
         word timeToWaitBeforePauseMeasuring;
         
-        bool carIsMoving = false;
+        // bool carIsMoving = false;
 
-        int getLeverValue();
         /**
          * Check if lever is pressed or not to let know that car is moving
          */
