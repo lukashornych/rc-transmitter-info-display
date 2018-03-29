@@ -8,7 +8,7 @@ class MainScreen
 {
     public:
         MainScreen(U8G2_SSD1306_128X64_NONAME_1_HW_I2C &display);
-        void draw(const char * t, float lipoVoltage, const char * fullLIPOVoltageText, const char * cellVoltageText);
+        void draw(byte minutes, byte seconds, float lipoVoltage, float lipoCellVoltage);
 
     private:
         U8G2_SSD1306_128X64_NONAME_1_HW_I2C &display;

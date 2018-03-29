@@ -3,12 +3,28 @@
 MainScreen::MainScreen(U8G2_SSD1306_128X64_NONAME_1_HW_I2C &display) : display(display)
 {}
 
-void MainScreen::draw(const char * t, float lipoVoltage, const char * fullLIPOVoltageText, const char * cellVoltageText)
+void MainScreen::draw(byte minutes, byte seconds, float lipoVoltage, float lipoCellVoltage)
 {
+    // format values to texts
+    char drivingTimeText[20];
+    char lipoVoltageText[7];
+    char lipoCellVoltageText[20];
+
+    char floatNum[5];
+
+    sprintf(drivingTimeText, "%02d:%02d", minutes, seconds);
+    
+    dtostrf(lipoVoltage, 4, 2, floatNum);
+    sprintf(lipoVoltageText, "%sV", floatNum);
+
+    dtostrf(lipoCellVoltage, 4, 2, floatNum);
+    sprintf(lipoCellVoltageText, "Per cell +-%sV", floatNum);
+
+    // display formatted texts
     display.firstPage();
     do {
-        drawTime(t);
-        drawLIPO(lipoVoltage, fullLIPOVoltageText, cellVoltageText);
+        drawTime(drivingTimeText);
+        drawLIPO(lipoVoltage, lipoVoltageText, lipoCellVoltageText);
     } while (display.nextPage());
 }
 

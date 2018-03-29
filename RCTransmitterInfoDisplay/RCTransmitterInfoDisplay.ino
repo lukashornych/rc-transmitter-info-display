@@ -1,3 +1,4 @@
+#include <U8g2lib.h>
 #include "src/MainScreen/MainScreen.h"
 #include "src/LIPO/LIPO.h"
 #include "src/Buzzer/Buzzer.h"
@@ -7,40 +8,22 @@
 #define LEVER_PIN   A3
 #define BUZZER_PIN  1
 
-MainScreen mainScreen;
+U8G2_SSD1306_128X64_NONAME_1_HW_I2C display(U8G2_R0, U8X8_PIN_NONE, 21, 20);
+
+MainScreen mainScreen(display);
 LIPO lipo(LIPO_PIN);
 Buzzer buzzer(BUZZER_PIN, 2000, 100, 3, 200, 20000, 11.5f);
-DrivingTimer drivingTimer(LEVER_PIN, 5000, 512, 50);
+DrivingTimer drivingTimer(LEVER_PIN, 5000, 540, 50);
 
 void setup()
 {
-    mainScreen.init();
+    display.begin();
+
     buzzer.init();
 }
 
 void loop()
 {
-    // float lipoVoltage = 11.5f;
-    // float lipoCellVoltage = 3.61f;
-    // byte minutes = 11;
-    // byte seconds = 50;
-
-    // char drivingTimeText[20];
-    // char lipoVoltageText[7];
-    // char lipoCellVoltageText[20];
-
-    // char floatNum[5];
-
-    // sprintf(drivingTimeText, "Time: %d:%d", minutes, seconds);
-    
-    // dtostrf(lipoVoltage, 4, 1, floatNum);
-    // sprintf(lipoVoltageText, "%sV", floatNum);
-
-    // dtostrf(lipoCellVoltage, 4, 2, floatNum);
-    // sprintf(lipoCellVoltageText, "Per cell ~%sV", floatNum);
-
-    // mainScreen.draw(drivingTimeText, lipoVoltageText, lipoCellVoltageText);
-
     drivingTimer.update();
 
     float lipoVoltage = lipo.getLIPOVoltage();
@@ -50,19 +33,5 @@ void loop()
 
     buzzer.check(lipoVoltage);
 
-    char drivingTimeText[20];
-    char lipoVoltageText[7];
-    char lipoCellVoltageText[20];
-
-    char floatNum[5];
-
-    sprintf(drivingTimeText, "Time: %d:%d", minutes, seconds);
-    
-    dtostrf(lipoVoltage, 4, 1, floatNum);
-    sprintf(lipoVoltageText, "%sV", floatNum);
-
-    dtostrf(lipoCellVoltage, 4, 2, floatNum);
-    sprintf(lipoCellVoltageText, "Per cell ~%sV", floatNum);
-
-    mainScreen.draw(drivingTimeText, lipoVoltageText, lipoCellVoltageText);
+    mainScreen.draw(minutes, seconds, lipoVoltage, lipoCellVoltage);
 }
