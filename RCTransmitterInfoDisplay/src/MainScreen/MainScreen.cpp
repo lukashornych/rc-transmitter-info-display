@@ -3,16 +3,18 @@
 MainScreen::MainScreen(U8G2_SSD1306_128X64_NONAME_1_HW_I2C &display) : display(display)
 {}
 
-void MainScreen::draw(byte minutes, byte seconds, float lipoVoltage, float lipoCellVoltage)
+void MainScreen::draw(byte minutes, byte seconds, float lipoVoltage, float lipoCellVoltage, bool alarmIsSet, byte setAlarmMinutes)
 {
     // format values to texts
-    char drivingTimeText[20];
+    char drivingTimeText[7];
+    char drivingTimerAlarmText[7];
     char lipoVoltageText[7];
     char lipoCellVoltageText[20];
 
     char floatNum[5];
 
     sprintf(drivingTimeText, "%02d:%02d", minutes, seconds);
+    sprintf(drivingTimerAlarmText, "%02d:00", setAlarmMinutes);
     
     dtostrf(lipoVoltage, 4, 2, floatNum);
     sprintf(lipoVoltageText, "%sV", floatNum);
@@ -23,17 +25,22 @@ void MainScreen::draw(byte minutes, byte seconds, float lipoVoltage, float lipoC
     // display formatted texts
     display.firstPage();
     do {
-        drawTime(drivingTimeText);
+        drawTime(drivingTimeText, alarmIsSet, drivingTimerAlarmText);
         drawLIPO(lipoVoltage, lipoVoltageText, lipoCellVoltageText);
     } while (display.nextPage());
 }
 
-void MainScreen::drawTime(const char * t)
+void MainScreen::drawTime(const char * t, bool alarmIsRunning, const char * alarm)
 {
     display.drawXBM(0, 0, iconsWidth, iconsHeight, stopwatchIcon);
 
     display.setFont(u8g2_font_7x14_mr);
     display.drawStr(iconsWidth + textOffsetX, 13, t);
+
+    if (alarmIsRunning) {
+        display.drawXBM(64, 0, iconsWidth, iconsHeight, alarmIcon);
+        display.drawStr(64 + iconsWidth + textOffsetX, 13, alarm);
+    }
 }
 
 void MainScreen::drawLIPO(float lipoVoltage, const char * fullLIPOVoltageText, const char * cellVoltageText)
