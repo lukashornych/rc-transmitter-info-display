@@ -15,6 +15,11 @@ void TimerSetupScreen::selectNextValue()
         currentValue++;
 }
 
+void TimerSetupScreen::resetValue()
+{
+    currentValue = 0;
+}
+
 
 
 void TimerSetupScreen::drawHeader()

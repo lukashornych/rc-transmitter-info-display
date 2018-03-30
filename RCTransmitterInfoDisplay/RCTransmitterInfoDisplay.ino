@@ -94,6 +94,7 @@ void loop()
 
             case PAGE_TIMER_ALARM: 
                 drivingTimer.setAlarm(timerSetupScreen.getSelectedValue());
+                timerSetupScreen.resetValue();
                 currentPage = PAGE_MAIN;
                 break;
         }

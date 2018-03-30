@@ -21,6 +21,10 @@ class TimerSetupScreen : public DisplayScreen
          * Selects next value in array of available values
          */
         void selectNextValue();
+        /**
+         * Resets current value to 0
+         */
+        void resetValue();
 
     protected:
         void drawHeader();
