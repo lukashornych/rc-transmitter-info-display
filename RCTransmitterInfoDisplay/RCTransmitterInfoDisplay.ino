@@ -15,7 +15,7 @@
 // pins
 #define LIPO_PIN            A2
 #define LEVER_PIN           A3
-#define BUZZER_PIN          1
+#define BUZZER_PIN          2
 
 #define ENTER_BUTTON_PIN    3
 #define SELECT_BUTTON_PIN   4
@@ -41,16 +41,19 @@ TimerSetupScreen timerSetupScreen(display);
 
 
 LIPO lipo(LIPO_PIN);
-Buzzer buzzer(BUZZER_PIN, 2000, 100, 3, 200, 20000, 11.5f);
 DrivingTimer drivingTimer(LEVER_PIN, 5000, 540, 50);
 ButtonsController buttonsController(ENTER_BUTTON_PIN, SELECT_BUTTON_PIN);
 
+Buzzer lipoBuzzer(BUZZER_PIN, 7000, 100, 4, 100, 10000);
+Buzzer drivingTimerAlarmBuzzer(BUZZER_PIN, 9000, 100, 2, 100, 1000);
+
+
+
 void setup()
 {
-    // currentPage = PAGE_MAIN;
-    display.begin();
+    pinMode(BUZZER_PIN, OUTPUT);
 
-    buzzer.init();
+    display.begin();
     buttonsController.init();
 }
 
@@ -63,7 +66,9 @@ void loop()
     byte minutes = drivingTimer.getMinutes();
     byte seconds = drivingTimer.getSeconds();
 
-    buzzer.check(lipoVoltage);
+    // control buzzers
+    lipoBuzzer.check(lipo.alarmIsRinging());
+    drivingTimerAlarmBuzzer.check(drivingTimer.alarmIsRinging());
 
     // control buttons action
     if (buttonsController.enterButtonPressed()) {
@@ -80,6 +85,7 @@ void loop()
                     case 2: currentPage = PAGE_TIMER_ALARM; break;
                     case 3: 
                         drivingTimer.stopAlarm();
+                        drivingTimerAlarmBuzzer.reset();
                         currentPage = PAGE_MAIN;
                         break;
                     case 4: currentPage = PAGE_MAIN; break;
@@ -89,12 +95,14 @@ void loop()
 
             case PAGE_LIPO_ALARM:
                 lipo.alarmTreshold = lipoAlarmSetupScreen.getSelectedValue();
+                lipoBuzzer.reset();
                 currentPage = PAGE_MAIN;
                 break;
 
             case PAGE_TIMER_ALARM: 
                 drivingTimer.setAlarm(timerSetupScreen.getSelectedValue());
                 timerSetupScreen.resetValue();
+                drivingTimerAlarmBuzzer.reset();
                 currentPage = PAGE_MAIN;
                 break;
         }

@@ -1,13 +1,8 @@
 #include "Buzzer.h"
 
-Buzzer::Buzzer(byte pin, word toneFreq, byte beepDuration, byte beepsCountInOneSeries, word beepDelay, word buzzerDelay, float votlageLimit)
-    : pin(pin), toneFreq(toneFreq), beepDuration(beepDuration), beeps(beeps), beepDelay(beepDelay), buzzerDelay(buzzerDelay), voltageLimit(voltageLimit)
+Buzzer::Buzzer(byte pin, word toneFreq, byte beepDuration, byte beepsCountInOneSeries, word beepDelay, word buzzerDelay)
+    : pin(pin), toneFreq(toneFreq), beepDuration(beepDuration), beeps(beepsCountInOneSeries), beepDelay(beepDelay), buzzerDelay(buzzerDelay)
 {}
-
-void Buzzer::init()
-{
-    pinMode(pin, OUTPUT);
-}
 
 void Buzzer::beep()
 {
@@ -15,9 +10,9 @@ void Buzzer::beep()
     beepsCounter++;
 }
 
-void Buzzer::check(float lipoVoltage)
+void Buzzer::check(bool underTreshold)
 { 
-    if (!buzzerActivated && (lipoVoltage < voltageLimit)) {
+    if (!buzzerActivated && underTreshold) {
         buzzerActivated = true;
 
         beep();
@@ -25,22 +20,30 @@ void Buzzer::check(float lipoVoltage)
         // activate one series of beeps
         beepTimer = millis();
     } else if (buzzerActivated) {
-        if (!buzzerWaitingForSeries) {
+        if (beepsCounter < beeps) {
             if ((beepTimer + beepDelay) < millis()) {
-                if (beepsCounter < beeps) {
-                    beep();
+                beep();
+                beepTimer = millis();
 
-                    beepTimer = millis();
-                } else if (beepsCounter == beeps) {
-                    beepsCounter = false;
-
-                    // start waiting for next beeps series
-                    buzzerWaitingForSeries = true;
+                // set timer if series of beeps ended
+                if (beepsCounter == beeps)
                     timer = millis();
-                }
             }
-        } else if (buzzerWaitingForSeries && ((timer + buzzerDelay) < millis())) {
-                buzzerWaitingForSeries = false;
+        } else if (beepsCounter == beeps) {
+            if ((timer + buzzerDelay) < millis()) {
+                beepsCounter = 0;
+                beepTimer = millis();
+                timer = 0;
+            }
         }
     }
+}
+
+void Buzzer::reset()
+{
+    buzzerActivated = false;
+    buzzerWaitingForSeries = false;
+    beepsCounter = 0;
+    beepTimer = 0;
+    timer = 0;
 }

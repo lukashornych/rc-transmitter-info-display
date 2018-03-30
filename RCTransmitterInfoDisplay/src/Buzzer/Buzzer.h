@@ -6,9 +6,9 @@
 class Buzzer 
 {
     public:
-        Buzzer(byte pin, word toneFreq, byte beepDuration, byte beepsCountInOneSeries, word beepDelay, word buzzerDelay, float votlageLimit);
-        void init();
-        void check(float lipoVoltage);
+        Buzzer(byte pin, word toneFreq, byte beepDuration, byte beepsCountInOneSeries, word beepDelay, word buzzerDelay);;
+        void check(bool underTreshold);
+        void reset();
 
     private:
         byte pin;
@@ -27,8 +27,6 @@ class Buzzer
 
         bool buzzerActivated = false;
         bool buzzerWaitingForSeries = false;
-
-        float voltageLimit = 11.5f;
 
         void beep();
 };
