@@ -64,3 +64,38 @@ byte DrivingTimer::getSeconds()
 {
     return (byte) floor((totalDrivingTime - (getMinutes() * 60000)) / 1000.0);
 }
+
+void DrivingTimer::resetTimer()
+{
+    totalDrivingTime = 0;
+}
+
+
+
+
+void DrivingTimer::setAlarm(byte minutes)
+{
+    alarmMinutes = minutes;
+    alarmRunning = true;
+}
+
+byte DrivingTimer::getAlarmMinutes()
+{
+    return alarmMinutes;
+}
+
+bool DrivingTimer::alarmIsRinging()
+{
+    return (alarmIsRunning() && (totalDrivingTime >= (getAlarmMinutes() * 60000)));
+}
+
+void DrivingTimer::stopAlarm()
+{
+    alarmRunning = false;
+    alarmMinutes = 0;
+}
+
+bool DrivingTimer::alarmIsRunning()
+{
+    return alarmRunning;
+}
