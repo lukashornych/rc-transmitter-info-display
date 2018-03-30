@@ -11,7 +11,12 @@ float LIPO::getLIPOVoltage()
     return value;
 }
 
-float LIPO::getAproximateCellVoltage(float lipoVoltage)
+float LIPO::getAproximateCellVoltage()
 {
-    return (lipoVoltage / 3.0f);
+    return (getLIPOVoltage() / 3.0f);
+}
+
+bool LIPO::alarmIsRinging()
+{
+    return (getLIPOVoltage() < alarmTreshold);
 }

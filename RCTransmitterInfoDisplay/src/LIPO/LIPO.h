@@ -8,9 +8,14 @@
 class LIPO
 {
     public:
+        float alarmTreshold = 11.0f;
+
         LIPO(byte lipoPin);
         float getLIPOVoltage();
-        float getAproximateCellVoltage(float lipoVoltage);
+        float getAproximateCellVoltage();
+
+        void setAlarmTreshold();
+        bool alarmIsRinging();
 
     private:
         byte lipoPin;
