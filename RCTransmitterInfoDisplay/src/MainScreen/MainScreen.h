@@ -4,6 +4,10 @@
 #include <U8g2lib.h>
 #include "MainScreenIcons.h"
 
+// used fonts
+// u8g2_font_7x14_mr
+// u8g2_font_fur25_tf
+
 class MainScreen
 {
     public:

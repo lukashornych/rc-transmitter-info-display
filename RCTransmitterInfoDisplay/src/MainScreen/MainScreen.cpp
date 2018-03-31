@@ -28,28 +28,29 @@ void MainScreen::draw(byte minutes, byte seconds, float lipoVoltage, bool alarmI
 
 void MainScreen::drawTime(const char * t, bool alarmIsRunning, const char * alarm)
 {
-    display.drawXBM(0, 0, iconsWidth, iconsHeight, stopwatchIcon);
-
-    display.setFont(u8g2_font_7x14_mr);
-    display.drawStr(iconsWidth + textOffsetX, 13, t);
+    display.setFont(u8g2_font_fur25_tf);
+    byte tWidth = display.getStrWidth(t);
+    display.drawStr(64 - (tWidth / 2), 53, t);
 
     if (alarmIsRunning) {
-        display.drawXBM(64, 0, iconsWidth, iconsHeight, alarmIcon);
-        display.drawStr(64 + iconsWidth + textOffsetX, 13, alarm);
+        display.setFont(u8g2_font_7x14_mr);
+        display.drawXBM(70, 0, iconsWidth, iconsHeight, alarmIcon);
+        display.drawStr(70 + iconsWidth + textOffsetX, 13, alarm);
     }
 }
 
 void MainScreen::drawLIPO(float lipoVoltage, const char * fullLIPOVoltageText)
 {
-    const byte width = 8;
-    const byte maxHeight = 21;
+    const byte maxWidth = 9;
+    const byte maxHeight = 4;
 
     // calculate height of box in battery icon from percentage of battery
-    byte lipoCapacityRectHeight = constrain(lipoVoltage - 10.8f, 0, 12.6f) / 1.8f * maxHeight;
+    // 0.7f is difference between highest and lowest lipo cell value
+    byte lipoCapacityRectWidth = constrain(lipoVoltage - 3.5f, 0, 4.2f) / 0.7f * (float) maxWidth;
     
-    display.drawXBM(0, 16, lipoIconWidth, lipoIconHeight, lipoIcon);
-    display.drawBox(4, 23 + (maxHeight - lipoCapacityRectHeight), width, lipoCapacityRectHeight);
+    display.drawXBM(0, 0, iconsWidth, iconsHeight, lipoIcon);
+    display.drawBox(3, 6, lipoCapacityRectWidth, maxHeight);
 
-    display.setFont(u8g2_font_fur25_tf);
-    display.drawStr(iconsWidth + textOffsetX, 45, fullLIPOVoltageText);
+    display.setFont(u8g2_font_7x14_mr);
+    display.drawStr(iconsWidth + textOffsetX, 13, fullLIPOVoltageText);
 }
