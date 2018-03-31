@@ -12,15 +12,13 @@ String menuOptions[menuOptionsCount] = {
 };
 
 // transmitter lipo voltages options
-const byte transLIPOVoltagesOptionsCount = 7;
+const byte transLIPOVoltagesOptionsCount = 5;
 float transLIPOVoltagesOptions[transLIPOVoltagesOptionsCount] = {
-    10.9f,
-    11.0f,
-    11.1f,
-    11.2f,
-    11.3f,
-    11.4f,
-    11.5f
+    3.5f,
+    3.6f,
+    3.7f,
+    3.8f,
+    3.9f
 };
 
 #endif // __MENUOPTIONS_H_

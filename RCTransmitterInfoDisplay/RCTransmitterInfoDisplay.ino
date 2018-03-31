@@ -76,17 +76,17 @@ void loop()
 
             case PAGE_MENU: 
                 switch (menuScreen.getSelectedOptionIndex()) {
-                    case 0: currentPage = PAGE_LIPO_ALARM;  break;
-                    case 1: 
+                    case 0: 
                         drivingTimer.resetTimer();
                         currentPage = PAGE_MAIN;
                         break;
-                    case 2: currentPage = PAGE_TIMER_ALARM; break;
-                    case 3: 
+                    case 1: currentPage = PAGE_TIMER_ALARM; break;
+                    case 2: 
                         drivingTimer.stopAlarm();
                         drivingTimerAlarmBuzzer.reset();
                         currentPage = PAGE_MAIN;
                         break;
+                    case 3: currentPage = PAGE_LIPO_ALARM;  break;
                     case 4: currentPage = PAGE_MAIN; break;
                 }
                 menuScreen.resetSelectedOption();
