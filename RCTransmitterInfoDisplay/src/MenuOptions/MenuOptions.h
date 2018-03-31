@@ -4,10 +4,10 @@
 // menu options
 const byte menuOptionsCount = 5;
 String menuOptions[menuOptionsCount] = {
-    "Set LIPO alarm",
     "Reset dri. timer",
     "Set timer alarm",
     "Stop timer alarm",
+    "Set LIPO alarm",
     "Back"
 };
 
