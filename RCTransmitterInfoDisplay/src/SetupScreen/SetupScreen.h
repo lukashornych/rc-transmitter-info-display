@@ -14,11 +14,11 @@ class SetupScreen : public DisplayScreen
          * @param headerTitle Header title
          * @param values Array of available values to choose from
          * @param valuesCount Values count
-         * @param selectedValueIndex Index of selected value
          * @param valuesUnit Values unit to display next to selected value
          */
-        SetupScreen(U8G2_SSD1306_128X64_NONAME_1_HW_I2C &display, String headerTitle, float * values, byte valuesCount, byte selectedValueIndex, String valuesUnit);
-        // ~SetupScreen();
+        SetupScreen(U8G2_SSD1306_128X64_NONAME_1_HW_I2C &display, String headerTitle, float * values, byte valuesCount, String valuesUnit);
+        ~SetupScreen();
+        void init(float selectedValue);
         /**
          * Gets selected value
          * @return Selected value from array of available values
@@ -42,7 +42,7 @@ class SetupScreen : public DisplayScreen
         String headerTitle;
         float * valuesFloats;
         byte valuesCount;
-        byte selectedValueIndex;
+        byte selectedValueIndex = 0;
         String valuesUnit;
 };
 

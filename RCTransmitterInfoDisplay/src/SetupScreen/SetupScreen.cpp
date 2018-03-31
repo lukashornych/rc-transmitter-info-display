@@ -1,8 +1,23 @@
 #include "SetupScreen.h"
 
-SetupScreen::SetupScreen(U8G2_SSD1306_128X64_NONAME_1_HW_I2C &display, String headerTitle, float * values, byte valuesCount, byte selectedValueIndex, String valuesUnit)
-    : DisplayScreen(display), headerTitle(headerTitle), valuesFloats(values), valuesCount(valuesCount), selectedValueIndex(selectedValueIndex), valuesUnit(valuesUnit)
+SetupScreen::SetupScreen(U8G2_SSD1306_128X64_NONAME_1_HW_I2C &display, String headerTitle, float * values, byte valuesCount, String valuesUnit)
+    : DisplayScreen(display), headerTitle(headerTitle), valuesFloats(values), valuesCount(valuesCount), valuesUnit(valuesUnit)
 {}
+
+SetupScreen::~SetupScreen()
+{
+    delete [] valuesFloats;
+}
+
+void SetupScreen::init(float selectedValue)
+{
+    for (byte i = 0; i < valuesCount; i++) {
+        if (valuesFloats[i] == selectedValue) {
+            selectedValueIndex = i;
+            break;
+        }
+    }
+}
 
 float SetupScreen::getSelectedValue()
 {

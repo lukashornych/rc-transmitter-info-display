@@ -35,7 +35,7 @@ byte currentPage = PAGE_MAIN;
 
 MainScreen mainScreen(display);
 MenuScreen menuScreen(display, menuOptions, menuOptionsCount);
-SetupScreen lipoAlarmSetupScreen(display, "Set LIPO alarm", transLIPOVoltagesOptions, transLIPOVoltagesOptionsCount, 0, "V");
+SetupScreen lipoAlarmSetupScreen(display, "Set LIPO alarm", transLIPOVoltagesOptions, transLIPOVoltagesOptionsCount, "V");
 TimerSetupScreen timerSetupScreen(display);
 
 
@@ -54,6 +54,8 @@ void setup()
     pinMode(BUZZER_PIN, OUTPUT);
 
     display.begin();
+    lipo.init();
+    lipoAlarmSetupScreen.init(lipo.getAlarmTreshold());
     buttonsController.init();
 }
 
@@ -93,7 +95,7 @@ void loop()
                 break;
 
             case PAGE_LIPO_ALARM:
-                lipo.alarmTreshold = lipoAlarmSetupScreen.getSelectedValue();
+                lipo.setAlarmTreshold(lipoAlarmSetupScreen.getSelectedValue());
                 lipoBuzzer.reset();
                 currentPage = PAGE_MAIN;
                 break;
