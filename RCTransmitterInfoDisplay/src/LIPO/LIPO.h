@@ -8,7 +8,7 @@
 class LIPO
 {
     public:
-        float alarmTreshold = 11.0f;
+        float alarmTreshold = 3.5f;
 
         LIPO(byte lipoPin);
         float getLIPOVoltage();
