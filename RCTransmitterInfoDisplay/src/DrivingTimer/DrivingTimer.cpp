@@ -57,12 +57,12 @@ unsigned long DrivingTimer::getRawTime()
 
 byte DrivingTimer::getMinutes()
 {
-    return (byte) floor(totalDrivingTime / 60000.0);
+    return (totalDrivingTime / 60000);
 }
 
 byte DrivingTimer::getSeconds()
 {
-    return (byte) floor((totalDrivingTime - (getMinutes() * 60000)) / 1000.0);
+    return (totalDrivingTime / 1000) % 60;
 }
 
 void DrivingTimer::resetTimer()

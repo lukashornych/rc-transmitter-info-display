@@ -62,7 +62,6 @@ void loop()
     drivingTimer.update();
 
     float lipoVoltage = lipo.getLIPOVoltage();
-    float lipoCellVoltage = lipo.getAproximateCellVoltage();
     byte minutes = drivingTimer.getMinutes();
     byte seconds = drivingTimer.getSeconds();
 
@@ -116,7 +115,7 @@ void loop()
 
     // draw page
     switch (currentPage) {
-        case PAGE_MAIN: mainScreen.draw(minutes, seconds, lipoVoltage, lipoCellVoltage, drivingTimer.alarmIsRunning(), drivingTimer.getAlarmMinutes()); break;
+        case PAGE_MAIN: mainScreen.draw(minutes, seconds, lipoVoltage, drivingTimer.alarmIsRunning(), drivingTimer.getAlarmMinutes()); break;
         case PAGE_MENU: menuScreen.draw(); break;
         case PAGE_LIPO_ALARM: lipoAlarmSetupScreen.draw(); break;
         case PAGE_TIMER_ALARM: timerSetupScreen.draw(); break;

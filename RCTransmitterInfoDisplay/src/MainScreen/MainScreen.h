@@ -8,7 +8,7 @@ class MainScreen
 {
     public:
         MainScreen(U8G2_SSD1306_128X64_NONAME_1_HW_I2C &display);
-        void draw(byte minutes, byte seconds, float lipoVoltage, float lipoCellVoltage, bool alarmIsRunning, byte setAlarmMinutes);
+        void draw(byte minutes, byte seconds, float lipoVoltage, bool alarmIsRunning, byte setAlarmMinutes);
 
     private:
         U8G2_SSD1306_128X64_NONAME_1_HW_I2C &display;
@@ -17,7 +17,7 @@ class MainScreen
         const byte textOffsetX = 3;
 
         void drawTime(const char * t,  bool alarmIsRunning, const char * alarm);
-        void drawLIPO(float lipoVoltage, const char * fullLIPOVoltageText, const char * cellsVoltagesText);
+        void drawLIPO(float lipoVoltage, const char * fullLIPOVoltageText);
 };
 
 #endif // __MAINSCREEN_H_

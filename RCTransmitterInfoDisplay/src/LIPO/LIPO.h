@@ -12,7 +12,6 @@ class LIPO
 
         LIPO(byte lipoPin);
         float getLIPOVoltage();
-        float getAproximateCellVoltage();
 
         void setAlarmTreshold();
         bool alarmIsRinging();

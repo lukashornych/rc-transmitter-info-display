@@ -3,13 +3,12 @@
 MainScreen::MainScreen(U8G2_SSD1306_128X64_NONAME_1_HW_I2C &display) : display(display)
 {}
 
-void MainScreen::draw(byte minutes, byte seconds, float lipoVoltage, float lipoCellVoltage, bool alarmIsSet, byte setAlarmMinutes)
+void MainScreen::draw(byte minutes, byte seconds, float lipoVoltage, bool alarmIsSet, byte setAlarmMinutes)
 {
     // format values to texts
     char drivingTimeText[7];
     char drivingTimerAlarmText[7];
     char lipoVoltageText[7];
-    char lipoCellVoltageText[20];
 
     char floatNum[5];
 
@@ -19,14 +18,11 @@ void MainScreen::draw(byte minutes, byte seconds, float lipoVoltage, float lipoC
     dtostrf(lipoVoltage, 4, 2, floatNum);
     sprintf(lipoVoltageText, "%sV", floatNum);
 
-    dtostrf(lipoCellVoltage, 4, 2, floatNum);
-    sprintf(lipoCellVoltageText, "Per cell +-%sV", floatNum);
-
     // display formatted texts
     display.firstPage();
     do {
         drawTime(drivingTimeText, alarmIsSet, drivingTimerAlarmText);
-        drawLIPO(lipoVoltage, lipoVoltageText, lipoCellVoltageText);
+        drawLIPO(lipoVoltage, lipoVoltageText);
     } while (display.nextPage());
 }
 
@@ -43,7 +39,7 @@ void MainScreen::drawTime(const char * t, bool alarmIsRunning, const char * alar
     }
 }
 
-void MainScreen::drawLIPO(float lipoVoltage, const char * fullLIPOVoltageText, const char * cellVoltageText)
+void MainScreen::drawLIPO(float lipoVoltage, const char * fullLIPOVoltageText)
 {
     const byte width = 8;
     const byte maxHeight = 21;
@@ -56,7 +52,4 @@ void MainScreen::drawLIPO(float lipoVoltage, const char * fullLIPOVoltageText, c
 
     display.setFont(u8g2_font_fur25_tf);
     display.drawStr(iconsWidth + textOffsetX, 45, fullLIPOVoltageText);
-
-    display.setFont(u8g2_font_7x14_mr);
-    display.drawStr(1, 61, cellVoltageText);
 }
