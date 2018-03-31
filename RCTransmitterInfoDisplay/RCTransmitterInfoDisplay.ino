@@ -13,8 +13,8 @@
 
 
 // pins
-#define LIPO_PIN            A2
-#define LEVER_PIN           A3
+#define LIPO_PIN            A1
+#define LEVER_PIN           A0
 #define BUZZER_PIN          2
 
 #define ENTER_BUTTON_PIN    3
@@ -23,7 +23,7 @@
 
 
 // display
-U8G2_SSD1306_128X64_NONAME_1_HW_I2C display(U8G2_R0, U8X8_PIN_NONE, 21, 20);
+U8G2_SSD1306_128X64_NONAME_1_HW_I2C display(U8G2_R0, U8X8_PIN_NONE, A5, A4);
 
 enum Pages {
     PAGE_MAIN,
