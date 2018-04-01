@@ -41,7 +41,7 @@ TimerSetupScreen timerSetupScreen(display);
 
 
 LIPO lipo(LIPO_PIN);
-DrivingTimer drivingTimer(LEVER_PIN, 5000, 540, 50);
+DrivingTimer drivingTimer(LEVER_PIN, 3000, 537, 15);
 ButtonsController buttonsController(ENTER_BUTTON_PIN, SELECT_BUTTON_PIN);
 
 Buzzer lipoBuzzer(BUZZER_PIN, 7000, 100, 4, 100, 10000);
